@@ -1,0 +1,9 @@
+## Key Features
+
+The following key features are currently a part of the UpTrain package.
+- **Model performance monitoring**: UpTrain tracks the performance of a machine learning model over time, including metrics such as accuracy, precision, recall, and F1 score. It provides visualizations and alerts to help users understand how well the model is performing 📊
+- **Data drift detection**: UpTrain uses advanced techniques such as statistical tests and change point detection algorithms to detect any changes in the distribution of data over time. This allows users to identify when their model's performance might be negatively impacted by data drift and take appropriate action 🕵️‍♂️
+- **Edge-case checking**: UpTrain uses user-defined signals as well as statistical techniques such as outlier detection to identify data points that fall outside of the typical range of values. These edge cases can be challenging for a machine learning model to predict accurately, and UpTrain allows users to flag and handle these cases separately 🛑
+- **Data integrity verification**: UpTrain checks for missing or inconsistent data, duplicate records, and other potential issues that could affect the accuracy of a machine learning model. It also checks for data quality issues such as outliers, missing values, and incorrect data types 🔍
+- **Customizable metrics**: UpTrain provides users with the ability to add their own custom metrics to monitor, such as business-specific KPIs. These metrics can be easily added to the dashboard and used alongside other performance metrics to gain a more complete understanding of the model's performance 📈
+- **Smart data-point collection**: UpTrain automatically collects data points that fall outside of the typical range of values or that cause data drift, for use in automated retraining of the model. This allows users to constantly improve the performance of their model by retraining it with new, relevant data 🤖
