@@ -1,3 +1,5 @@
+## What is UpTrain?
+
 UpTrain is an open-source machine learning (ML) refinement tool that helps you understand how your models are performing in production. It provides several key features that help you answer important questions about your models and take action to improve their performance.
 
 One of the key features of UpTrain is its ability to provide ML observability. It helps you answer questions such as:
