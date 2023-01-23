@@ -14,6 +14,7 @@ With UpTrain, you can be confident that your machine learning models are perform
 
 UpTrain is an advanced system that helps you improve the performance of your machine learning models in production. The following figure describes the high-level architecture of UpTrain.
 
+![how-uptrain-works](https://user-images.githubusercontent.com/5287871/213975228-112d9c0d-b7f5-4c29-8041-13e7c7aef684.jpg)
 
 
 With UpTrain, you can easily integrate your existing machine learning model training pipelines. It seamlessly integrates with any model type, such as PyTorch, TensorFlow, or scikit-learn, and can be used with any cloud provider, such as AWS, Azure, or GCP. 🔌 Additionally, you can add any log type, such as model inputs, outputs, user feedback, and ground truth, to UpTrain for monitoring. 📊
