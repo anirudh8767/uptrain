@@ -59,7 +59,7 @@ for sub_dir in sub_dirs:
                     key=plot_name + 'y'
                     )
             fig = return_plotly_fig(plot_name, x_log=x_log, y_log=y_log)
-            for csv_file in csv_files:
+            for i, csv_file in enumerate(csv_files):
                 # Reading the csv file
                 df = pd.read_csv(csv_file)
 
@@ -68,7 +68,7 @@ for sub_dir in sub_dirs:
                 fig = fig.add_trace(go.Scatter(
                                 x=df['count'],
                                 y=df[plot_id],
-                                name=plot_id,
+                                name=str(i) + ", " + plot_id,
                                 ))
             st.plotly_chart(fig)
 
