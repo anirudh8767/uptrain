@@ -37,8 +37,9 @@ st.markdown(st_style, unsafe_allow_html=True)
 sub_dirs = [path[0] for path in os.walk(log_folder)]
 st.sidebar.title("Select dashboards to view")
 for sub_dir in sub_dirs:
-    if sub_dir.split('/')[-2] == 'line_plots':
-        plot_name = sub_dir.split('/')[-1]
+    sub_dir_split = sub_dir.split('/')
+    if sub_dir_split[-2] == 'line_plots':
+        plot_name = sub_dir_split[-1]
         
         if st.sidebar.checkbox(f"Line-plot for {plot_name}"):
             st.markdown(f"### Line chart for {plot_name}")
@@ -72,4 +73,28 @@ for sub_dir in sub_dirs:
                                 ))
             st.plotly_chart(fig)
 
+        st.sidebar.markdown("""---""")
+
+
+    if sub_dir_split[-2] == 'histograms':
+        plot_name = sub_dir_split[-1]
+        
+        if st.sidebar.checkbox(f"Histogram for {plot_name}"):
+            st.markdown(f"### Histogram for {plot_name}")
+
+            # Getting the list of all csv files in streamlit logs 
+            csv_files = [file for path,_,_ in os.walk(sub_dir)
+                            for file in glob(os.path.join(path, "*.csv"))]
+
+            for i, csv_file in enumerate(csv_files):
+                count = csv_file.split('/')[-1].split('.')[0]
+                if st.checkbox(f"{plot_name} histogram for count {count}"):
+                    with open(csv_file,'r') as file: 
+                        data = file.readlines() 
+                    lastRow = json.loads(json.loads(data[-1]))
+                    # import pdb; pdb.set_trace()
+                    fig = go.Figure(data=[go.Histogram(x=lastRow, name=count)])
+                    st.plotly_chart(fig)
+                    
+    
         st.sidebar.markdown("""---""")
