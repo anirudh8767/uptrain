@@ -6,6 +6,7 @@ import sys
 import plotly.graph_objects as go
 import numpy as np
 import json
+import plotly.express as px
 
 
 def return_plotly_fig(y_axis, x_axis='Num predictions', x_log=False, y_log=False):
@@ -72,6 +73,7 @@ for sub_dir in sub_dirs:
                                 name=str(i) + ", " + plot_id,
                                 ))
             st.plotly_chart(fig)
+            # import pdb; pdb.set_trace()
 
         st.sidebar.markdown("""---""")
 
@@ -79,22 +81,49 @@ for sub_dir in sub_dirs:
     if sub_dir_split[-2] == 'histograms':
         plot_name = sub_dir_split[-1]
         
-        if st.sidebar.checkbox(f"Histogram for {plot_name}"):
-            st.markdown(f"### Histogram for {plot_name}")
+        if plot_name != "umap_and_clusters":
+            if st.sidebar.checkbox(f"Histogram for {plot_name}"):
+                st.markdown(f"### Histogram for {plot_name}")
 
-            # Getting the list of all csv files in streamlit logs 
-            csv_files = [file for path,_,_ in os.walk(sub_dir)
-                            for file in glob(os.path.join(path, "*.csv"))]
+                # Getting the list of all files in streamlit logs 
+                files = [file for path,_,_ in os.walk(sub_dir)
+                                for file in glob(os.path.join(path, "*.json"))]
 
-            for i, csv_file in enumerate(csv_files):
-                count = csv_file.split('/')[-1].split('.')[0]
-                if st.checkbox(f"{plot_name} histogram for count {count}"):
-                    with open(csv_file,'r') as file: 
-                        data = file.readlines() 
-                    lastRow = json.loads(json.loads(data[-1]))
-                    # import pdb; pdb.set_trace()
-                    fig = go.Figure(data=[go.Histogram(x=lastRow, name=count)])
-                    st.plotly_chart(fig)
+                for i, file in enumerate(files):
+                    count = file.split('/')[-1].split('.')[0]
+                    if st.checkbox(f"{plot_name} histogram for count {count}"): 
+                        f = open(file)
+                        data = json.loads(json.load(f))
+                        fig = go.Figure(data=[go.Histogram(x=data, name=count)])
+                        st.plotly_chart(fig)
+        else:
+            if st.sidebar.checkbox(f"{plot_name}"):
+                st.markdown(f"### {plot_name}")
+
+                # Getting the list of all files in streamlit logs 
+                files = [file for path,_,_ in os.walk(sub_dir)
+                                for file in glob(os.path.join(path, "*.json"))]
+
+                for i, file in enumerate(files):
+                    count = file.split('/')[-1].split('.')[0]
+                    if st.checkbox(f"{plot_name} UMAP and Clusters for count {count}"):
+                        f = open(file)
+                        data = json.loads(json.load(f))
+                        arr = np.array(data['umap'])
+                        clusters = data['clusters']
+                        x = arr[:, 0]
+                        y = arr[:, 1]
+                        if arr.shape[1] == 2:
+                            fig = px.scatter(x=x, y=y, color=clusters)
+                        elif arr.shape[1] == 3:
+                            z = arr[:, 2]
+                            fig = px.scatter_3d(x=x, y=y, z=z, color=clusters)
+                        else:
+                            raise("Umap dimension not 2D or 3D.")
+                        st.plotly_chart(fig, use_container_width=True)
+                        st.write(
+                            f"Number of clusters for count {count}: {len(set(clusters))-1}"
+                        )
                     
     
         st.sidebar.markdown("""---""")
