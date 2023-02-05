@@ -67,8 +67,8 @@ def test_model(model, text):
     mask_token_index = torch.where(inputs["input_ids"] == tokenizer.mask_token_id)[1]
     mask_token_logits = token_logits[0, mask_token_index, :]
     # Pick the [MASK] candidates with the highest logits
-    top_5_tokens = torch.topk(mask_token_logits, 5, dim=1).indices[0].tolist()
-    return [tokenizer.decode([token]) for token in top_5_tokens]
+    top_10_tokens = torch.topk(mask_token_logits, 10, dim=1).indices[0].tolist()
+    return [tokenizer.decode([token]) for token in top_10_tokens]
 
 def create_sample_dataset(save_file_name):
     data = {

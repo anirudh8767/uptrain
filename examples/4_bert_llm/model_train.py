@@ -29,9 +29,10 @@ def retrain_model(model, dataset):
         evaluation_strategy="epoch",
         learning_rate=2e-5,
         weight_decay=0.01,
+        num_train_epochs=10.0,
         per_device_train_batch_size=batch_size,
         per_device_eval_batch_size=batch_size,
-        logging_steps=logging_steps,
+        # logging_steps=logging_steps,
     )
 
     trainer = Trainer(
