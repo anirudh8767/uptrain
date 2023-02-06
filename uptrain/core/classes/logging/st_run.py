@@ -96,7 +96,7 @@ for sub_dir in sub_dirs:
 
                 for i, file in enumerate(files):
                     count = file.split("/")[-1].split(".")[0]
-                    if count < 0:
+                    if int(count) < 0:
                         f = open(file)
                         data = json.loads(json.load(f))
                         fig = go.Figure(data=[go.Histogram(x=data, name=count)])
