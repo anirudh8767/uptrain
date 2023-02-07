@@ -26,6 +26,7 @@ log_folder = sys.argv[1]
 st.set_page_config(
     page_title="UpTrain AI Dashboard",
     layout="wide",
+    page_icon='https://github.com/uptrain-ai/uptrain/raw/dashboard/uptrain/core/classes/logging/uptrain_logo_icon.png'
 )
 st.title("UpTrain AI Live Dashboard")
 st_style = """
