@@ -40,6 +40,9 @@ sub_dirs = [path[0] for path in os.walk(log_folder)]
 st.sidebar.title("Select dashboards to view")
 for sub_dir in sub_dirs:
     sub_dir_split = sub_dir.split("/")
+
+    ######### Line Plots ###########
+
     if sub_dir_split[-2] == "line_plots":
         plot_name = sub_dir_split[-1]
 
@@ -78,7 +81,7 @@ for sub_dir in sub_dirs:
                 )
             st.plotly_chart(fig)
 
-        st.sidebar.markdown("""---""")
+    ######### Plotting histograms ###########
 
     if sub_dir_split[-2] == "histograms":
         plot_name = sub_dir_split[-1]
@@ -140,18 +143,21 @@ for sub_dir in sub_dirs:
                             f"Number of clusters for count {count}: {len(set(clusters))-1}"
                         )
 
-        st.sidebar.markdown("""---""")
+    ######### Showing Alerts ###########
 
     if sub_dir_split[-1] == "alerts":
-        files = [
-                    file
-                    for path, _, _ in os.walk(sub_dir)
-                    for file in glob(os.path.join(path, "*.json"))
-                ]
-        for i, file in enumerate(files):
-            alert_name = file.split("/")[-1].split(".")[0]
-            f = open(file)
-            alert = json.load(f)
-            st.subheader(alert_name)
-            st.markdown("##### " + alert)
+        if st.sidebar.checkbox(f"Show Alerts for {sub_dir_split[-2]}", value=True):
+            files = [
+                        file
+                        for path, _, _ in os.walk(sub_dir)
+                        for file in glob(os.path.join(path, "*.json"))
+                    ]
+            for i, file in enumerate(files):
+                alert_name = file.split("/")[-1].split(".")[0]
+                f = open(file)
+                alert = json.load(f)
+                st.subheader(alert_name)
+                st.markdown("##### " + alert)
+
+    st.sidebar.markdown("""---""")
 
