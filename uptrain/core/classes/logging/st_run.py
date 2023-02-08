@@ -43,7 +43,7 @@ for sub_dir in sub_dirs:
     if sub_dir_split[-2] == "line_plots":
         plot_name = sub_dir_split[-1]
 
-        if st.sidebar.checkbox(f"Line-plot for {plot_name}"):
+        if st.sidebar.checkbox(f"Line-plot for {plot_name}", value=True):
             st.markdown(f"### Line chart for {plot_name}")
 
             # Getting the list of all csv files in streamlit logs
@@ -77,7 +77,6 @@ for sub_dir in sub_dirs:
                     )
                 )
             st.plotly_chart(fig)
-            # import pdb; pdb.set_trace()
 
         st.sidebar.markdown("""---""")
 
@@ -85,7 +84,7 @@ for sub_dir in sub_dirs:
         plot_name = sub_dir_split[-1]
 
         if plot_name != "umap_and_clusters":
-            if st.sidebar.checkbox(f"Histogram for {plot_name}"):
+            if st.sidebar.checkbox(f"Histogram for {plot_name}", value=True):
                 st.markdown(f"### Histogram for {plot_name}")
 
                 # Getting the list of all files in streamlit logs
@@ -142,3 +141,17 @@ for sub_dir in sub_dirs:
                         )
 
         st.sidebar.markdown("""---""")
+
+    if sub_dir_split[-1] == "alerts":
+        files = [
+                    file
+                    for path, _, _ in os.walk(sub_dir)
+                    for file in glob(os.path.join(path, "*.json"))
+                ]
+        for i, file in enumerate(files):
+            alert_name = file.split("/")[-1].split(".")[0]
+            f = open(file)
+            alert = json.load(f)
+            st.subheader(alert_name)
+            st.markdown("##### " + alert)
+
