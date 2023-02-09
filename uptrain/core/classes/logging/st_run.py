@@ -46,8 +46,8 @@ for sub_dir in sub_dirs:
     if sub_dir_split[-2] == "line_plots":
         plot_name = sub_dir_split[-1]
 
-        if st.sidebar.checkbox(f"Line-plot for {plot_name}", value=True):
-            st.markdown(f"### Line chart for {plot_name}")
+        if st.sidebar.checkbox(f"Plot for {plot_name}", value=True):
+            st.markdown(f"### Plot for {plot_name}")
 
             # Getting the list of all csv files in streamlit logs
             csv_files = [
@@ -72,13 +72,23 @@ for sub_dir in sub_dirs:
 
                 # Getting plot_id
                 plot_id = csv_file.split("/")[-1].split(".")[0]
-                fig = fig.add_trace(
-                    go.Scatter(
-                        x=df["count"],
-                        y=df[plot_id],
-                        name=str(i) + ", " + plot_id,
+                if plot_id[-4:]=="_bar":
+                    plot_id = plot_id[0:-4]
+                    fig = fig.add_trace(
+                        go.Bar(
+                            x=df["count"],
+                            y=df[plot_id],
+                            name=plot_id,
+                        )
                     )
-                )
+                else:
+                    fig = fig.add_trace(
+                        go.Scatter(
+                            x=df["count"],
+                            y=df[plot_id],
+                            name=str(i) + ", " + plot_id,
+                        )
+                    )
             st.plotly_chart(fig)
             st.markdown("""---""")    
 

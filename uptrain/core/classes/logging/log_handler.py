@@ -33,7 +33,7 @@ class LogHandler:
             tb_writer = self.tb_logs.add_writer(dashboard_name)
             self.tb_writers.update({dashboard_name: tb_writer})
 
-    def add_scalars(self, plot_name, dictn, count, dashboard_name):
+    def add_scalars(self, plot_name, dictn, count, dashboard_name, bar=False):
         dashboard_name, plot_name = self.make_name_fold_directory_friendly(
             [dashboard_name, plot_name]
         )
@@ -51,7 +51,7 @@ class LogHandler:
             plot_folder = os.path.join(dashboard_dir, "line_plots", plot_name)
             os.makedirs(plot_folder, exist_ok=True)
             dictn.update({"count": count})
-            self.st_writer.add_scalars(dictn, plot_folder)
+            self.st_writer.add_scalars(dictn, plot_folder, bar)
 
     def add_histogram(self, plot_name, data, dashboard_name, count=-1):
         dashboard_name, plot_name = self.make_name_fold_directory_friendly(

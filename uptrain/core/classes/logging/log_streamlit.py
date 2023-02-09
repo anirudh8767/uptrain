@@ -28,12 +28,15 @@ class StreamlitLogs:
         t = threading.Thread(target=launch_st, args=([]))
         t.start()
 
-    def add_scalars(self, dict, folder):
+    def add_scalars(self, dict, folder, bar=False):
         # CSV file that includes the data
         for key in dict.keys():
             if key == "count":
                 continue
-            file_name = os.path.join(folder, key + ".csv")
+            if not bar:
+                file_name = os.path.join(folder, key + ".csv")
+            else:
+                file_name = os.path.join(folder, key + "_bar.csv")
             if not os.path.isfile(file_name):
                 with open(file_name, "w", newline="") as f_object:
                     writer = csv.writer(f_object)
