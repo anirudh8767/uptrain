@@ -80,10 +80,13 @@ for sub_dir in sub_dirs:
                     )
                 )
             st.plotly_chart(fig)
+            st.markdown("""---""")    
+
+        st.sidebar.markdown("""---""")
 
     ######### Plotting histograms ###########
 
-    if sub_dir_split[-2] == "histograms":
+    elif sub_dir_split[-2] == "histograms":
         plot_name = sub_dir_split[-1]
 
         if plot_name != "umap_and_clusters":
@@ -100,16 +103,23 @@ for sub_dir in sub_dirs:
                 for i, file in enumerate(files):
                     count = file.split("/")[-1].split(".")[0]
                     if int(count) < 0:
-                        f = open(file)
-                        data = json.loads(json.load(f))
-                        fig = go.Figure(data=[go.Histogram(x=data, name=count)])
+                        with open(file, encoding='utf-8') as f:
+                            data = json.loads(f.read())
+                        if isinstance(data, dict):
+                            fig = go.Figure()
+                            for key in data.keys():
+                                fig = fig.add_trace(go.Histogram(x=data[key], name=key))
+                        else:
+                            fig = go.Figure(data=[go.Histogram(x=data)])
                         st.plotly_chart(fig)
+                        st.markdown("""---""")   
                     else:
                         if st.checkbox(f"{plot_name} histogram for count {count}"):
                             f = open(file)
-                            data = json.loads(json.load(f))
+                            data = json.load(f)
                             fig = go.Figure(data=[go.Histogram(x=data, name=count)])
                             st.plotly_chart(fig)
+                            st.markdown("""---""")   
                         
         else:
             if st.sidebar.checkbox(f"{plot_name}"):
@@ -142,10 +152,12 @@ for sub_dir in sub_dirs:
                         st.write(
                             f"Number of clusters for count {count}: {len(set(clusters))-1}"
                         )
+                        st.markdown("""---""")   
+        st.sidebar.markdown("""---""")
 
     ######### Showing Alerts ###########
 
-    if sub_dir_split[-1] == "alerts":
+    elif sub_dir_split[-1] == "alerts":
         if st.sidebar.checkbox(f"Show Alerts for {sub_dir_split[-2]}", value=True):
             files = [
                         file
@@ -158,6 +170,7 @@ for sub_dir in sub_dirs:
                 alert = json.load(f)
                 st.subheader(alert_name)
                 st.markdown("##### " + alert)
+                st.markdown("""---""")
 
-    st.sidebar.markdown("""---""")
+        st.sidebar.markdown("""---""")
 
